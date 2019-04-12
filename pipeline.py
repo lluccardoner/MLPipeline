@@ -41,10 +41,26 @@ if __name__ == "__main__":
         (3, "hadoop mapreduce", 0.0)
     ], ["id", "text", "label"])
 
+    tokenizer_conf = {
+        "input_col": "text",
+        "output_col": "words"
+    }
+
+    hashingTF_conf = {
+        "input_col": tokenizer_conf["output_col"],
+        "output_col": "features"
+    }
+
+    lr_conf = {
+        "maxIter": 10,
+        "regParam": 0.001
+    }
+
     # Configure an ML pipeline, which consists of three stages: tokenizer, hashingTF, and lr.
-    tokenizer = Tokenizer(inputCol="text", outputCol="words")
-    hashingTF = HashingTF(inputCol=tokenizer.getOutputCol(), outputCol="features")
-    lr = LogisticRegression(maxIter=10, regParam=0.001)
+    tokenizer = Tokenizer(inputCol=tokenizer_conf["input_col"], outputCol=tokenizer_conf["output_col"])
+    hashingTF = HashingTF(inputCol=hashingTF_conf["input_col"], outputCol=hashingTF_conf["output_col"])
+    lr = LogisticRegression(maxIter=lr_conf["maxIter"], regParam=lr_conf["regParam"])
+
     pipeline = Pipeline(stages=[tokenizer, hashingTF, lr])
 
     # Fit the pipeline to training documents.
