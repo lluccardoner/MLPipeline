@@ -43,29 +43,56 @@ if __name__ == "__main__":
         (3, "hadoop mapreduce", 0.0)
     ], ["id", "text", "label"])
 
-    tokenizer_conf = {
-        "inputCol": "text",
-        "outputCol": "words"
+    # stage_conf = { "name": "StageName", "params": { "parameter": value } }
+    my_stage = {
+        "name": "Pipeline",
+        "params": {
+            "stages": [
+                {
+                    "name": "Tokenizer",
+                    "params": {
+                        "inputCol": "text",
+                        "outputCol": "words"
+                    }
+                },
+                {
+                    "name": "HashingTF",
+                    "params": {
+                        "inputCol": "words",
+                        "outputCol": "features"
+                    }
+                },
+                {
+                    "name": "LogisticRegression",
+                    "params": {
+                        "maxIter": 10,
+                        "regParam": 0.001
+                    }
+                }
+            ]
+        }
     }
 
-    hashingTF_conf = {
-        "inputCol": tokenizer_conf["outputCol"],
-        "outputCol": "features"
-    }
+    def create_stage(stage_conf):
+        stage = None
+        name = stage_conf["name"]
+        params = stage_conf["params"]
 
-    lr_conf = {
-        "maxIter": 10,
-        "regParam": 0.001
-    }
+        if name == "Pipeline":
+            params["stages"] = [create_stage(s_conf) for s_conf in params["stages"]]
+            stage = Pipeline().setParams(**params)
+        elif name == "Tokenizer":
+            stage = Tokenizer().setParams(**params)
+        elif name == "HashingTF":
+            stage = HashingTF().setParams(**params)
+        elif name == "LogisticRegression":
+            stage = LogisticRegression().setParams(**params)
 
-    pipeline_conf = {
-        "stages": [
-            Tokenizer().setParams(**tokenizer_conf),
-            HashingTF().setParams(**hashingTF_conf),
-            LogisticRegression().setParams(**lr_conf)]
-    }
+        return stage
 
-    pipeline = Pipeline().setParams(**pipeline_conf)
+
+    pipeline = create_stage(my_stage)
+    print(pipeline.explainParams())
 
     # Fit the pipeline to training documents.
     model = pipeline.fit(training)
@@ -83,7 +110,7 @@ if __name__ == "__main__":
     selected = prediction.select("id", "text", "probability", "prediction")
     for row in selected.collect():
         rid, text, prob, prediction = row
-        print("(%d, %s) --> prob=%s, prediction=%f" % (rid, text, str(prob), prediction))
+    print("(%d, %s) --> prob=%s, prediction=%f" % (rid, text, str(prob), prediction))
     # $example off$
 
     spark.stop()
