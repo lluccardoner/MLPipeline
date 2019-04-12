@@ -42,13 +42,13 @@ if __name__ == "__main__":
     ], ["id", "text", "label"])
 
     tokenizer_conf = {
-        "input_col": "text",
-        "output_col": "words"
+        "inputCol": "text",
+        "outputCol": "words"
     }
 
     hashingTF_conf = {
-        "input_col": tokenizer_conf["output_col"],
-        "output_col": "features"
+        "inputCol": tokenizer_conf["outputCol"],
+        "outputCol": "features"
     }
 
     lr_conf = {
@@ -57,9 +57,9 @@ if __name__ == "__main__":
     }
 
     # Configure an ML pipeline, which consists of three stages: tokenizer, hashingTF, and lr.
-    tokenizer = Tokenizer(inputCol=tokenizer_conf["input_col"], outputCol=tokenizer_conf["output_col"])
-    hashingTF = HashingTF(inputCol=hashingTF_conf["input_col"], outputCol=hashingTF_conf["output_col"])
-    lr = LogisticRegression(maxIter=lr_conf["maxIter"], regParam=lr_conf["regParam"])
+    tokenizer = Tokenizer().setParams(**tokenizer_conf)
+    hashingTF = HashingTF().setParams(**hashingTF_conf)
+    lr = LogisticRegression().setParams(**lr_conf)
 
     pipeline = Pipeline(stages=[tokenizer, hashingTF, lr])
 
