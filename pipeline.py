@@ -34,6 +34,8 @@ if __name__ == "__main__":
 
     # $example on$
     # Prepare training documents from a list of (id, text, label) tuples.
+
+    # Configure an ML pipeline, which consists of three stages: tokenizer, hashingTF, and lr.
     training = spark.createDataFrame([
         (0, "a b c d e spark", 1.0),
         (1, "b d", 0.0),
@@ -56,12 +58,14 @@ if __name__ == "__main__":
         "regParam": 0.001
     }
 
-    # Configure an ML pipeline, which consists of three stages: tokenizer, hashingTF, and lr.
-    tokenizer = Tokenizer().setParams(**tokenizer_conf)
-    hashingTF = HashingTF().setParams(**hashingTF_conf)
-    lr = LogisticRegression().setParams(**lr_conf)
+    pipeline_conf = {
+        "stages": [
+            Tokenizer().setParams(**tokenizer_conf),
+            HashingTF().setParams(**hashingTF_conf),
+            LogisticRegression().setParams(**lr_conf)]
+    }
 
-    pipeline = Pipeline(stages=[tokenizer, hashingTF, lr])
+    pipeline = Pipeline().setParams(**pipeline_conf)
 
     # Fit the pipeline to training documents.
     model = pipeline.fit(training)
