@@ -6,9 +6,9 @@ from pyspark.ml.feature import HashingTF, Tokenizer
 class StageFactory:
 
     def __init__(self):
-        self.classes = self.register_classes()
+        self.classes = self._register_classes()
 
-    def register_classes(self):
+    def _register_classes(self):
         return {
             'Pipeline': Pipeline,
             'Tokenizer': Tokenizer,
@@ -16,10 +16,10 @@ class StageFactory:
             'LogisticRegression': LogisticRegression,
         }
 
-    def get_stage(self, name):
+    def _get_stage(self, name):
         return self.classes[name]()
 
-    def set_params(self, stage, params):
+    def _set_params(self, stage, params):
         if isinstance(stage, Pipeline):
             params["stages"] = [self.create_stage(s_conf) for s_conf in params["stages"]]
         stage.setParams(**params)
@@ -28,7 +28,7 @@ class StageFactory:
         name = stage_conf["name"]
         params = stage_conf["params"]
 
-        stage = self.get_stage(name)
-        self.set_params(stage, params)
+        stage = self._get_stage(name)
+        self._set_params(stage, params)
 
         return stage

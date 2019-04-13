@@ -1,6 +1,6 @@
 from pyspark.sql import SparkSession
 
-from stage_factory import StageFactory
+from src.stage_factory import StageFactory
 
 if __name__ == "__main__":
     spark = SparkSession \
