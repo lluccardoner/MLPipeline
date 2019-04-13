@@ -1,34 +1,27 @@
-from pyspark.ml import Pipeline
-from pyspark.ml.classification import LogisticRegression
-from pyspark.ml.feature import HashingTF, Tokenizer
+from pyspark.ml import *
 
 
 class StageFactory:
 
     def __init__(self):
-        self.classes = self._register_classes()
+        pass
 
-    def _register_classes(self):
-        return {
-            'Pipeline': Pipeline,
-            'Tokenizer': Tokenizer,
-            'HashingTF': HashingTF,
-            'LogisticRegression': LogisticRegression,
-        }
+    @staticmethod
+    def get_stage(name):
+        return eval(name + "()")
 
-    def _get_stage(self, name):
-        return self.classes[name]()
-
-    def _set_params(self, stage, params):
+    @staticmethod
+    def set_params(stage, params):
         if isinstance(stage, Pipeline):
-            params["stages"] = [self.create_stage(s_conf) for s_conf in params["stages"]]
+            params["stages"] = [StageFactory.create_stage(s_conf) for s_conf in params["stages"]]
         stage.setParams(**params)
 
-    def create_stage(self, stage_conf):
+    @staticmethod
+    def create_stage(stage_conf):
         name = stage_conf["name"]
         params = stage_conf["params"]
 
-        stage = self._get_stage(name)
-        self._set_params(stage, params)
+        stage = StageFactory.get_stage(name)
+        StageFactory.set_params(stage, params)
 
         return stage

@@ -21,21 +21,21 @@ if __name__ == "__main__":
         "params": {
             "stages": [
                 {
-                    "name": "Tokenizer",
+                    "name": "feature.Tokenizer",
                     "params": {
                         "inputCol": "text",
                         "outputCol": "words"
                     }
                 },
                 {
-                    "name": "HashingTF",
+                    "name": "feature.HashingTF",
                     "params": {
                         "inputCol": "words",
                         "outputCol": "features"
                     }
                 },
                 {
-                    "name": "LogisticRegression",
+                    "name": "classification.LogisticRegression",
                     "params": {
                         "maxIter": 10,
                         "regParam": 0.001
