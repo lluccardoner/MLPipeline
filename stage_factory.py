@@ -6,22 +6,26 @@ from pyspark.ml.feature import HashingTF, Tokenizer
 class StageFactory:
 
     def __init__(self):
-        pass
+        self.classes = {
+            'Pipeline': Pipeline,
+            'Tokenizer': Tokenizer,
+            'HashingTF': HashingTF,
+            'LogisticRegression': LogisticRegression,
+        }
 
-    @staticmethod
-    def create_stage(stage_conf):
-        stage = None
+    def get_stage(self, name):
+        return self.classes[name]()
+
+    def set_params(self, stage, params):
+        if isinstance(stage, Pipeline):
+            params["stages"] = [self.create_stage(s_conf) for s_conf in params["stages"]]
+        stage.setParams(**params)
+
+    def create_stage(self, stage_conf):
         name = stage_conf["name"]
         params = stage_conf["params"]
 
-        if name == "Pipeline":
-            params["stages"] = [StageFactory.create_stage(s_conf) for s_conf in params["stages"]]
-            stage = Pipeline().setParams(**params)
-        elif name == "Tokenizer":
-            stage = Tokenizer().setParams(**params)
-        elif name == "HashingTF":
-            stage = HashingTF().setParams(**params)
-        elif name == "LogisticRegression":
-            stage = LogisticRegression().setParams(**params)
+        stage = self.get_stage(name)
+        self.set_params(stage, params)
 
         return stage

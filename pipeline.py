@@ -45,7 +45,7 @@ if __name__ == "__main__":
         }
     }
 
-    pipeline = StageFactory.create_stage(my_stage)
+    pipeline = StageFactory().create_stage(my_stage)
     print(pipeline.explainParams())
 
     # Fit the pipeline to training documents.
