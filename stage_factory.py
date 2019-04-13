@@ -6,7 +6,10 @@ from pyspark.ml.feature import HashingTF, Tokenizer
 class StageFactory:
 
     def __init__(self):
-        self.classes = {
+        self.classes = self.register_classes()
+
+    def register_classes(self):
+        return {
             'Pipeline': Pipeline,
             'Tokenizer': Tokenizer,
             'HashingTF': HashingTF,
