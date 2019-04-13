@@ -7,14 +7,19 @@ class StageFactory:
         pass
 
     @staticmethod
-    def get_stage(name):
-        return eval(name + "()")
+    def get_stage(name: str):
+        expr = name + "()"
+        return eval(expr)
 
     @staticmethod
     def set_params(stage, params):
-        if isinstance(stage, Pipeline):
-            params["stages"] = [StageFactory.create_stage(s_conf) for s_conf in params["stages"]]
-        stage.setParams(**params)
+        if not params:
+            # Set default params
+            stage.setParams()
+        else:
+            if isinstance(stage, Pipeline):
+                params["stages"] = [StageFactory.create_stage(s_conf) for s_conf in params["stages"]]
+            stage.setParams(**params)
 
     @staticmethod
     def create_stage(stage_conf):
