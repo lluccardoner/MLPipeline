@@ -9,7 +9,9 @@ Spark [pipelines](https://spark.apache.org/docs/latest/ml-pipeline.html) are use
  The goal is to be able to do the following things only with a single config file:
  * [DONE] Create pipelines with multiple stages
  * [DONE] Set stages' attributes
- * [TODO] Perform pipeline steps: fit, transform (predict), save, load
+ * [IN PROGRESS] Perform pipeline steps
+    * [DONE] fit, transform (predict)
+    * [TODO] save, load
  * [TODO] Dataset operations: load, transform and save 
  * [TODO] Perform cross validation on a pipeline 
  * [TODO] Perform hyper-parameter tuning on a pipeline 
