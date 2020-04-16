@@ -1,6 +1,7 @@
 from pyspark.sql import SparkSession
 
 from src.stage_factory import StageFactory
+from src.step_factory import StepFactory
 
 if __name__ == "__main__":
     spark = SparkSession \
@@ -49,7 +50,13 @@ if __name__ == "__main__":
     print(pipeline.explainParams())
 
     # Fit the pipeline to training documents.
-    model = pipeline.fit(training)
+    my_fit_step = {
+        "name": "fit",
+        "params": {'dataset': training}
+    }
+
+    # model = pipeline.fit(dataset=training)
+    model = StepFactory.create_step(my_fit_step).execute(pipeline)
 
     # Prepare test documents, which are unlabeled (id, text) tuples.
     test = spark.createDataFrame([
@@ -60,7 +67,12 @@ if __name__ == "__main__":
     ], ["id", "text"])
 
     # Make predictions on test documents and print columns of interest.
-    prediction = model.transform(test)
+    # prediction = model.transform(test)
+    my_predict_step = {
+        "name": "transform",
+        "params": {'dataset': test}
+    }
+    prediction = StepFactory.create_step(my_predict_step).execute(model)
     selected = prediction.select("id", "text", "probability", "prediction")
     for row in selected.collect():
         rid, text, prob, prediction = row
