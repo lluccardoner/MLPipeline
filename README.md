@@ -29,18 +29,18 @@ step_config = {
 }
 ```
 
-* ``step_name`` is the name of the method that will be executed on the step stage (i.e ``fit``, ``transform``, ``save``, ``load`)
+* ``step_name`` is the name of the method that will be executed on the step stage (i.e ``fit``, ``transform``, ``save``, ``load``)
 * ``step_params`` are the params of the method that will be executed (i.e dataset)
 * ``step_stage`` is the stage to execute the step on. The stage could be the output of another step
 
 ## Stage configuration
 
 ```
-step_config = {
+stage_config = {
         "name": stage_name,
         "params": stage_params 
 }
 ```
 
-* ``stage_name`` is the name of the stage that will be created. It must have the package paths relative to ``pyspark.ml`` (i.e ``feature.Tokenizer``, ``classification.LogisticRegression`)
+* ``stage_name`` is the name of the stage that will be created. It must have the package paths relative to ``pyspark.ml`` (i.e ``feature.Tokenizer``, ``classification.LogisticRegression``)
 * ``stage_params`` are the params of the stage (i.e input and utput columns)
