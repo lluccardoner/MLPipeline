@@ -19,5 +19,28 @@ Spark [pipelines](https://spark.apache.org/docs/latest/ml-pipeline.html) are use
  
  As stated before, the main goal is to couple all these functionalities in one library.
  
-  
+ ## Step configuration
  
+```
+step_config = {
+    "name": step_name,
+    "params": step_params,
+    "stage": step_stage
+}
+```
+
+* ``step_name`` is the name of the method that will be executed on the step stage (i.e ``fit``, ``transform``, ``save``, ``load`)
+* ``step_params`` are the params of the method that will be executed (i.e dataset)
+* ``step_stage`` is the stage to execute the step on. The stage could be the output of another step
+
+## Stage configuration
+
+```
+step_config = {
+        "name": stage_name,
+        "params": stage_params 
+}
+```
+
+* ``stage_name`` is the name of the stage that will be created. It must have the package paths relative to ``pyspark.ml`` (i.e ``feature.Tokenizer``, ``classification.LogisticRegression`)
+* ``stage_params`` are the params of the stage (i.e input and utput columns)
