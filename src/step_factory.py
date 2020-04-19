@@ -14,7 +14,10 @@ class StepFactory:
         params = step_conf["params"]
         stage = step_conf["stage"]
 
-        if not issubclass(stage.__class__, (Estimator, Transformer)):
+        if "stage" in stage:
+            # Stage comes from an executed step
+            stage = StepFactory.create_step(stage).execute()
+        else:
+            # Create a stage
             stage = StageFactory.create_stage(stage)
-
         return Step(name, params, stage)
