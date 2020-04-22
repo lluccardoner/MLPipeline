@@ -11,7 +11,7 @@ Spark [pipelines](https://spark.apache.org/docs/latest/ml-pipeline.html) are use
  * [DONE] Set stages' attributes
  * [IN PROGRESS] Perform pipeline steps
     * [DONE] fit, transform (predict)
-    * [TODO] save, load
+    * [DONE] save, load
  * [TODO] Dataset operations: load, transform and save 
  * [TODO] Perform cross validation on a pipeline 
  * [TODO] Perform hyper-parameter tuning on a pipeline 

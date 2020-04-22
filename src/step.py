@@ -17,15 +17,22 @@ class Step:
     def step_predict(self, stage):
         return stage.predict(**self.params)
 
+    def step_load(self, stage):
+        return stage.load(**self.params)
+
+    def step_save(self, stage):
+        if 'overwrite' in self.params and self.params['overwrite'] == 'true':
+            return stage.write().overwrite().save(self.params['path'])
+        else:
+            return stage.write().save(self.params['path'])
+
     def execute(self):
         switcher = {
             'fit': self.step_fit,
             'transform': self.step_transform,
-            'predict': self.step_predict
+            'predict': self.step_predict,
+            'load': self.step_load,
+            'save': self.step_save
         }
         step_func = switcher.get(self.name, self.invalid_step)
         return step_func(self.stage)
-
-
-
-
