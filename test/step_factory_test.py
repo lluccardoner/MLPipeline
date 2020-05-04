@@ -1,7 +1,7 @@
 import unittest
 
 from pyspark.ml import *
-from pyspark.sql import SparkSession
+from pyspark.sql import SparkSession, DataFrame
 
 from step_factory import StepFactory
 
@@ -13,7 +13,7 @@ class StepFactoryTest(unittest.TestCase):
     def setUpClass(cls):
         cls.spark = SparkSession \
             .builder \
-            .appName("StageFactoryTest") \
+            .appName("MLPipeline") \
             .getOrCreate()
 
     @classmethod
@@ -35,7 +35,7 @@ class StepFactoryTest(unittest.TestCase):
             "stage": my_stage
         }
 
-        step = StepFactory.create_step(my_fit_step)
+        step = StepFactory.create_step(self.spark, my_fit_step)
 
         cls = feature.Tokenizer
         self.assertIsInstance(step.stage, cls,
@@ -92,11 +92,29 @@ class StepFactoryTest(unittest.TestCase):
             "stage": my_fit_step
         }
 
-        step = StepFactory.create_step(my_predict_step)
+        step = StepFactory.create_step(self.spark, my_predict_step)
 
-        cls = classification.LogisticRegressionModel
+        cls = PipelineModel
         self.assertIsInstance(step.stage, cls,
                               msg=f"Stage {step.stage} of step {step} is not instance of {cls.__class__}")
+
+    def test_create_step_should_create_dataset(self):
+        step_conf = {
+            "name": "fit",
+            "params": {
+                "dataset": {
+                    "path": "../test/resources/datasets/test.parquet",
+                    "format": "parquet"
+                }
+            },
+            "stage": classification.LogisticRegressionModel()
+        }
+        step = StepFactory.create_step(self.spark, step_conf)
+
+        cls = DataFrame
+        dataset = step.params["dataset"]
+        self.assertIsInstance(dataset, cls,
+                              msg=f"Param dataset {dataset} of step {step} is not instance of {cls.__class__}")
 
 
 if __name__ == '__main__':

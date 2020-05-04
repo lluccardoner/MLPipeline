@@ -23,6 +23,10 @@ class StageFactory:
 
     @staticmethod
     def create_stage(stage_conf):
+        if not isinstance(stage_conf, dict):
+            # Stage conf is already a stage
+            return stage_conf
+
         name = stage_conf["name"]
         params = stage_conf["params"]
 

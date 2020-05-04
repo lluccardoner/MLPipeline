@@ -13,7 +13,7 @@ class StageFactoryTest(unittest.TestCase):
     def setUpClass(cls):
         cls.spark = SparkSession \
             .builder \
-            .appName("StageFactoryTest") \
+            .appName("MLPipeline") \
             .getOrCreate()
 
     @classmethod

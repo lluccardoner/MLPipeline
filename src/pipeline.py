@@ -5,24 +5,8 @@ from src.step_factory import StepFactory
 if __name__ == "__main__":
     spark = SparkSession \
         .builder \
-        .appName("PipelineExample") \
+        .appName("MLPipeline") \
         .getOrCreate()
-
-    # Prepare training documents, which are labeled (id, text, label) tuples.
-    training = spark.createDataFrame([
-        (0, "a b c d e spark", 1.0),
-        (1, "b d", 0.0),
-        (2, "spark f g h", 1.0),
-        (3, "hadoop mapreduce", 0.0)
-    ], ["id", "text", "label"])
-
-    # Prepare test documents, which are unlabeled (id, text) tuples.
-    test = spark.createDataFrame([
-        (4, "spark i j k"),
-        (5, "l m n"),
-        (6, "spark hadoop spark"),
-        (7, "apache hadoop")
-    ], ["id", "text"])
 
     # stage_conf = { "name": "StageName", "params": { "parameter": value } }
     my_stage = {
@@ -57,7 +41,10 @@ if __name__ == "__main__":
     my_fit_step = {
         "name": "fit",
         "params": {
-            "dataset": training
+            "dataset": {
+                "path": "../test/resources/datasets/training.parquet",
+                "format": "parquet"
+            }
         },
         "stage": my_stage
     }
@@ -67,12 +54,15 @@ if __name__ == "__main__":
         "name": "transform",
         "params":
             {
-                "dataset": test
+                "dataset": {
+                    "path": "../test/resources/datasets/test.parquet",
+                    "format": "parquet"
+                }
             },
         "stage": my_fit_step
     }
 
-    prediction = StepFactory.create_step(my_predict_step).execute()
+    prediction = StepFactory.create_step(spark, my_predict_step).execute()
     selected = prediction.select("id", "text", "probability", "prediction")
     for row in selected.collect():
         rid, text, prob, prediction = row
