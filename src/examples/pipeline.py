@@ -2,13 +2,14 @@ from pyspark.sql import SparkSession
 
 from src.step_factory import StepFactory
 
+# Example from https://spark.apache.org/docs/latest/ml-pipeline.html#example-pipeline
 if __name__ == "__main__":
     spark = SparkSession \
         .builder \
         .appName("MLPipeline") \
         .getOrCreate()
 
-    # stage_conf = { "name": "StageName", "params": { "parameter": value } }
+    # Configure an ML pipeline, which consists of three stages: tokenizer, hashingTF, and lr.
     my_stage = {
         "name": "Pipeline",
         "params": {
@@ -38,24 +39,27 @@ if __name__ == "__main__":
         }
     }
 
+    # Fit the pipeline to training documents.
+    # model = pipeline.fit(training)
     my_fit_step = {
         "name": "fit",
         "params": {
             "dataset": {
-                "path": "../test/resources/datasets/training.parquet",
+                "path": "dataset/pipeline/training.parquet",
                 "format": "parquet"
             }
         },
         "stage": my_stage
     }
 
+    # Make predictions on test documents and print columns of interest.
     # prediction = model.transform(test)
     my_predict_step = {
         "name": "transform",
         "params":
             {
                 "dataset": {
-                    "path": "../test/resources/datasets/test.parquet",
+                    "path": "dataset/pipeline/test.parquet",
                     "format": "parquet"
                 }
             },
