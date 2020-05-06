@@ -1,5 +1,3 @@
-from pyspark.sql import DataFrame
-
 from dataset_factory import DatasetFactory
 from src.stage_factory import StageFactory
 from step import Step
@@ -21,7 +19,7 @@ class StepFactory:
             stage = StepFactory.create_step(spark, stage).execute()
         else:
             # Create a stage
-            stage = StageFactory.create_stage(stage)
+            stage = StageFactory.create_stage(spark, stage)
 
         if "dataset" in params and isinstance(params["dataset"], dict):
             # Create dataset if needed in step parameters

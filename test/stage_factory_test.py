@@ -47,7 +47,7 @@ class StageFactoryTest(unittest.TestCase):
             "binary": True
         }
 
-        StageFactory.set_params(stage, params)
+        StageFactory.set_params(self.spark, stage, params)
 
         self.assertTrue(stage.isSet("inputCol"), msg="Param inputCols should be set by user")
         self.assertTrue(stage.isSet("outputCol"), msg="Param outputCol should be set by user")
@@ -67,7 +67,7 @@ class StageFactoryTest(unittest.TestCase):
         stage = feature.HashingTF()
         params = {}
 
-        StageFactory.set_params(stage, params)
+        StageFactory.set_params(self.spark, stage, params)
 
         self.assertFalse(stage.isSet("inputCol"), msg="Param inputCols should NOT be set by user")
         self.assertFalse(stage.isSet("outputCol"), msg="Param outputCol should NOT be set by user")
@@ -79,7 +79,7 @@ class StageFactoryTest(unittest.TestCase):
         params = {"wrongParam": 123}
 
         with self.assertRaises(TypeError):
-            StageFactory.set_params(stage, params)
+            StageFactory.set_params(self.spark, stage, params)
 
     def test_set_params_should_set_pipeline_params(self):
         stage = Pipeline()
@@ -94,7 +94,7 @@ class StageFactoryTest(unittest.TestCase):
         ]
         }
 
-        StageFactory.set_params(stage, params)
+        StageFactory.set_params(self.spark, stage, params)
 
         self.assertTrue(stage.isSet("stages"), msg="Param stages should be set by user")
         self.assertTrue(isinstance(stage.getStages()[0], feature.Tokenizer),
@@ -130,7 +130,7 @@ class StageFactoryTest(unittest.TestCase):
             }
         }
 
-        stage = StageFactory.create_stage(my_stage)
+        stage = StageFactory.create_stage(self.spark, my_stage)
 
         self.assertTrue(isinstance(stage, Pipeline))
         self.assertTrue(isinstance(stage.getStages()[0], feature.Tokenizer))
