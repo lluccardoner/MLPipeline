@@ -1,0 +1,46 @@
+{
+  "name": "transform",
+  "params": {
+    "dataset": {
+      "path": "dataset/pipeline/test.parquet",
+      "format": "parquet"
+    }
+  },
+  "stage": {
+    "name": "fit",
+    "params": {
+      "dataset": {
+        "path": "dataset/pipeline/training.parquet",
+        "format": "parquet"
+      }
+    },
+    "stage": {
+      "name": "Pipeline",
+      "params": {
+        "stages": [
+          {
+            "name": "feature.Tokenizer",
+            "params": {
+              "inputCol": "text",
+              "outputCol": "words"
+            }
+          },
+          {
+            "name": "feature.HashingTF",
+            "params": {
+              "inputCol": "words",
+              "outputCol": "features"
+            }
+          },
+          {
+            "name": "classification.LogisticRegression",
+            "params": {
+              "maxIter": 10,
+              "regParam": 0.001
+            }
+          }
+        ]
+      }
+    }
+  }
+}
