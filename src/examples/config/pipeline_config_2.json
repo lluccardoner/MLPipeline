@@ -1,0 +1,43 @@
+{
+  "name": "save",
+  "params": {
+      "path": "src/examples/fitted-pipe"
+  },
+  "stage": {
+    "name": "fit",
+    "params": {
+      "dataset": {
+        "path": "src/examples/dataset/pipeline/training.parquet",
+        "format": "parquet"
+      }
+    },
+    "stage": {
+      "name": "Pipeline",
+      "params": {
+        "stages": [
+          {
+            "name": "feature.Tokenizer",
+            "params": {
+              "inputCol": "text",
+              "outputCol": "words"
+            }
+          },
+          {
+            "name": "feature.HashingTF",
+            "params": {
+              "inputCol": "words",
+              "outputCol": "features"
+            }
+          },
+          {
+            "name": "classification.LogisticRegression",
+            "params": {
+              "maxIter": 10,
+              "regParam": 0.001
+            }
+          }
+        ]
+      }
+    }
+  }
+}

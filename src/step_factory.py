@@ -1,5 +1,5 @@
 from dataset_factory import DatasetFactory
-from src.stage_factory import StageFactory
+from stage_factory import StageFactory
 from step import Step
 
 

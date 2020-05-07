@@ -9,7 +9,7 @@ class StageFactory:
         pass
 
     @staticmethod
-    def get_stage(name: str):
+    def get_stage(name):
         expr = name + "()"
         return eval(expr)
 
