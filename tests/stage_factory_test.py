@@ -3,7 +3,7 @@ import unittest
 from pyspark.ml import *
 from pyspark.sql import SparkSession
 
-from stage_factory import StageFactory
+from ml_pipeline.stage_factory import StageFactory
 
 
 class StageFactoryTest(unittest.TestCase):

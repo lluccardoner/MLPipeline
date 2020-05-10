@@ -5,6 +5,33 @@ Spark [pipelines](https://spark.apache.org/docs/latest/ml-pipeline.html) are use
  
  **Motivation**: The motivation of this project is to be able to try different ML pipelines fast without the need to change the code.
  
+ ## Install
+ directly from git
+ ```bash
+ pip install -e git+https://github.com/lluccardoner/MLPipeline.git#egg=ml-pipeline
+```
+from your local repo copy
+```bash
+pip install -e .
+```
+ 
+ ### Run tests
+ install test requirements (if not present):
+ from your local repo copy
+ ```bash
+ pip install -r requirements-dev.txt # or pip install -e ".[dev]"
+ ```
+ run the tests
+ ```bash
+ cd test
+ pytest
+ ```
+ run the tests launching ipdb on failure or with `ipdb.set_trace()`
+ ```bash
+ pytest -s -n0 --pdb
+ ```
+ the coverage report is stored in `htmlcov` folder
+ 
  ## Usage
  Create a config file with the ML pipeline that you want to run and execute the following command:
  

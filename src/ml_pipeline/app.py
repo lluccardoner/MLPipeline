@@ -2,8 +2,8 @@ import sys
 
 from pyspark.sql import SparkSession
 
-from config_factory import ConfigFactory
-from step_factory import StepFactory
+from ml_pipeline.config_factory import ConfigFactory
+from ml_pipeline.step_factory import StepFactory
 
 if __name__ == "__main__":
 

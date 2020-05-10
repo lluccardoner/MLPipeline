@@ -1,6 +1,6 @@
-from dataset_factory import DatasetFactory
-from stage_factory import StageFactory
-from step import Step
+from ml_pipeline.dataset_factory import DatasetFactory
+from ml_pipeline.stage_factory import StageFactory
+from ml_pipeline.step import Step
 
 
 class StepFactory:

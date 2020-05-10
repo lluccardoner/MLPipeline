@@ -1,0 +1,7 @@
+ipdb
+pytest
+pytest-pep8
+pytest-xdist
+flaky
+pytest-cov
+pytest-sugar

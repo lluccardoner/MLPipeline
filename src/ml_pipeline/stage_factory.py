@@ -1,6 +1,6 @@
 from pyspark.ml import *
 
-from dataset_factory import DatasetFactory
+from ml_pipeline.dataset_factory import DatasetFactory
 
 
 class StageFactory:

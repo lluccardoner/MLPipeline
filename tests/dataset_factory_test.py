@@ -2,7 +2,7 @@ import unittest
 
 from pyspark.sql import SparkSession
 
-from dataset_factory import DatasetFactory
+from ml_pipeline.dataset_factory import DatasetFactory
 
 
 class DatasetFactoryTest(unittest.TestCase):
@@ -21,7 +21,7 @@ class DatasetFactoryTest(unittest.TestCase):
 
     def test_create_dataset_should_load_parquet(self):
         dataset_conf = {
-            "path": "resources/datasets/test.parquet",
+            "path": "./resources/datasets/test.parquet",
             "format": "parquet"
         }
 
@@ -32,7 +32,7 @@ class DatasetFactoryTest(unittest.TestCase):
 
     def test_create_dataset_should_load_csv(self):
         dataset_conf = {
-            "path": "resources/datasets/test.csv",
+            "path": "./resources/datasets/test.csv",
             "format": "csv",
             "sep": ",",
             "header": True

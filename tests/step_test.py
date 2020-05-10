@@ -5,7 +5,7 @@ from pyspark.ml import *
 from pyspark.ml.linalg import Vectors
 from pyspark.sql import SparkSession
 
-from step import Step
+from ml_pipeline.step import Step
 
 
 class StepTest(unittest.TestCase):

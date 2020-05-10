@@ -1,6 +1,6 @@
 from pyspark.sql import SparkSession
 
-from src.step_factory import StepFactory
+from ml_pipeline.step_factory import StepFactory
 
 # Example from https://spark.apache.org/docs/latest/ml-pipeline.html#example-pipeline
 if __name__ == "__main__":

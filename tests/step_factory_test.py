@@ -3,7 +3,7 @@ import unittest
 from pyspark.ml import *
 from pyspark.sql import SparkSession, DataFrame
 
-from step_factory import StepFactory
+from ml_pipeline.step_factory import StepFactory
 
 
 class StepFactoryTest(unittest.TestCase):
@@ -103,7 +103,7 @@ class StepFactoryTest(unittest.TestCase):
             "name": "fit",
             "params": {
                 "dataset": {
-                    "path": "../test/resources/datasets/test.parquet",
+                    "path": "./resources/datasets/test.parquet",
                     "format": "parquet"
                 }
             },
