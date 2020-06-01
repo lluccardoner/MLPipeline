@@ -1,6 +1,6 @@
 from pyspark.sql import SparkSession
 
-from step_factory import StepFactory
+from ml_pipeline.step_factory import StepFactory
 
 if __name__ == "__main__":
     spark = SparkSession \
